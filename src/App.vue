@@ -337,7 +337,7 @@
         <div class="relative">
           <img src="@/assets/kyoto_nearby.jpg" alt="" class="w-full">
           <div class="noise_mask absolute inset-0 mix-blend-multiply before:opacity-100 before:mix-blend-overlay" />
-          <img src="@/assets/signature.png" alt=""
+          <img src="@/assets/my_signature.png" alt=""
             class="absolute -bottom-5 left-1/2 -translate-x-1/2 w-1/2 pointer-events-none">
         </div>
         <template #extra>
