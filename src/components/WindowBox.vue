@@ -211,6 +211,7 @@ defineExpose({
     transform: translate(-50%, -50%) !important;
 
     height: auto !important;
+    max-height: 67vh;
   }
 
   .size-toggle {
