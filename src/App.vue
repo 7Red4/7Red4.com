@@ -370,8 +370,10 @@
     </main>
 
     <footer class="absolute bottom-0 left-0 w-full h-10 flex justify-center items-center">
-      <p class="text-xs">
-        © 2025 7Red4
+      <p class="text-xs flex items-center gap-2">
+        © 2025 7Red4 <a href="https://github.com/7Red4" target="_blank" class="inline-block">
+          <svg_github class="w-6 h-6" />
+        </a>
       </p>
     </footer>
   </div>
@@ -385,7 +387,7 @@ import img_tomato_filled from '@/assets/tomato_filled.png'
 import svg_about from '@/assets/about.svg'
 import svg_works from '@/assets/works.svg'
 import svg_copy from '@/assets/copy.svg'
-
+import svg_github from '@/assets/github.svg'
 import WindowBox from './components/WindowBox.vue'
 import dayjs from 'dayjs'
 
