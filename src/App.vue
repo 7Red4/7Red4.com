@@ -453,6 +453,9 @@ const tools = ref([
 
 const skills = ref([
   {
+    name: 'TypeScript'
+  },
+  {
     name: 'Vue.js'
   },
   {
