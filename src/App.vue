@@ -34,11 +34,11 @@
                 <span class="text-2xl font-bold">Ryan Lee</span>
                 <div class="w-2 inline-block" />
                 <span class="text-xl text-red-400">
-                  李閎仕 <span class="text-sm">(紅柿)</span>
+                  <span class="whitespace-nowrap">李閎仕</span> <span class="text-sm whitespace-nowrap">(紅柿)</span>
                 </span>
               </div>
               <div>
-                <p>Web Developer</p>
+                <p>💻 Web Developer</p>
               </div>
             </div>
           </div>
