@@ -8,7 +8,13 @@
     <div class="title-bar" @mousedown.prevent="startDrag">
       <div class="window-controls">
         <button v-if="!noClose" class="btn" @click="emit('closeWindow', name)">×</button>
-        <button v-if="!noSizeToggle" class="btn size-toggle" :class="{ 'rotate-180': !isLarge }" @click="toggleSize">
+        <button
+          v-if="!noSizeToggle"
+          class="btn size-toggle"
+          :class="{ 'rotate-180': !isLarge }"
+          @click.stop="toggleSize"
+          @mousedown.stop
+        >
           <svg width="85%" viewBox="0 0 30 17" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path d="M1 15.5L15 2L29 15.5" stroke="black" stroke-width="2" />
           </svg>
