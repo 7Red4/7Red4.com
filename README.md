@@ -7,6 +7,7 @@
 - [ ] Sound effects
 - [ ] Responsive design
 - [ ] i18n
+- [ ] Favicon
 
 ## Tech Stack
 
