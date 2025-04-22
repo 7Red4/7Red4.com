@@ -1,10 +1,14 @@
 <template>
-  <div v-show="visible" class="window" :style="{ top: position.y + 'px', left: position.x + 'px', zIndex: zIndex }"
-    @mousedown="bringToFront">
+  <div
+    v-show="visible"
+    class="window"
+    :style="{ top: position.y + 'px', left: position.x + 'px', zIndex: zIndex }"
+    @mousedown="bringToFront"
+  >
     <div class="title-bar" @mousedown.prevent="startDrag">
       <div class="window-controls">
         <button v-if="!noClose" class="btn" @click="emit('closeWindow', name)">×</button>
-        <button v-if="!noSizeToggle" class="btn" :class="{ 'rotate-180': !isLarge }" @click="toggleSize">
+        <button v-if="!noSizeToggle" class="btn size-toggle" :class="{ 'rotate-180': !isLarge }" @click="toggleSize">
           <svg width="85%" viewBox="0 0 30 17" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path d="M1 15.5L15 2L29 15.5" stroke="black" stroke-width="2" />
           </svg>
@@ -45,6 +49,12 @@ const emit = defineEmits<{
   (e: 'closeWindow', name: string): void
   (e: 'outside', name: string): void
 }>();
+
+watch(() => props.visible, (v) => {
+  if (v) {
+    isLarge.value = true
+  }
+})
 
 const position = ref()
 const isLarge = ref(true)
@@ -97,6 +107,7 @@ const bringToFront = () => {
   if (zIndex.value < windowZIndexMax.value) {
     zIndex.value = ++windowZIndexMax.value
   }
+  isLarge.value = true
 }
 
 watch(() => props.visible, (v) => {
@@ -181,5 +192,23 @@ defineExpose({
 
 .extra-content {
   border-top: 1px solid #888;
+}
+
+@media (max-width: 768px) {
+  .window {
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    top: 50% !important;
+    bottom: auto !important;
+    left: 50% !important;
+    transform: translate(-50%, -50%) !important;
+
+    height: auto !important;
+  }
+
+  .size-toggle {
+    display: none;
+  }
 }
 </style>
