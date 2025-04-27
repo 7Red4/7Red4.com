@@ -31,24 +31,24 @@
 
       <div
         v-if="isMenuVisible"
-        class="menu-container absolute top-full left-0 bg-[#fdffd9] shadow-lg border-2 border-black"
+        class="menu-container absolute top-full left-0 shadow-lg border-2 border-black"
       >
         <ul>
           <li
-            class="relative whitespace-nowrap cursor-pointer px-2 py-1"
+            class="menu_list_item relative whitespace-nowrap cursor-pointer px-2 py-1"
             @mouseover="isLanguageMenuVisible = true"
             @mouseleave="isLanguageMenuVisible = false"
           >
             🌐 Languages ▶
             <div
               v-if="isLanguageMenuVisible"
-              class="absolute top-0 left-full bg-[#fdffd9] shadow-lg px-2 py-1 border-2 border-black"
+              class="absolute top-0 left-full shadow-lg border-2 border-black"
             >
               <ul>
                 <li
                   v-for="(language, index) in languages"
                   :key="language.value"
-                  class="flex items-center gap-2"
+                  class="menu_list_item flex items-center gap-2 px-2 py-1"
                   :class="{
                     'border-b-2 border-black': index !== languages.length - 1
                   }"
@@ -143,9 +143,33 @@ const changeLanguage = (language: string) => {
 
 const isMenuVisible = ref(false);
 
+const handleClickOutside = (event: MouseEvent) => {
+  const menuContainer = document.querySelector('.menu-container');
+  const menuBtn = document.querySelector('.menu-btn');
+
+  if (
+    menuContainer &&
+    menuBtn &&
+    !menuContainer.contains(event.target as Node) &&
+    !menuBtn.contains(event.target as Node)
+  ) {
+    isMenuVisible.value = false;
+  }
+};
+
 const toggleMenu = () => {
   isMenuVisible.value = !isMenuVisible.value;
+  if (isMenuVisible.value) {
+    document.addEventListener('click', handleClickOutside);
+  } else {
+    document.removeEventListener('click', handleClickOutside);
+  }
 };
+
+// Clean up event listener when component is unmounted
+onUnmounted(() => {
+  document.removeEventListener('click', handleClickOutside);
+});
 
 const isLanguageMenuVisible = ref(false);
 
@@ -179,5 +203,15 @@ setInterval(() => {
   width: 1px;
   align-self: stretch;
   background-color: #666;
+}
+
+.menu_list_item {
+  background-color: #fdffd9;
+  color: black;
+}
+
+.menu_list_item:hover {
+  background-color: #232323;
+  color: #fff;
 }
 </style>
