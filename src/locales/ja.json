@@ -1,0 +1,109 @@
+{
+  "bring_window_back": "あらら！ウィンドウを戻して😱",
+  "name": {
+    "main": "赤井柿（アカイカキ）",
+    "sub": "李閎仕",
+    "sub_alias": "リーホンシ"
+  },
+  "job": "web developer",
+  "about": {
+    "title": "自己紹介",
+    "description": "こんにちは！赤井柿です",
+    "what_i_do": "何をするか：",
+    "description_list": [
+      "華やかなエフェクトのあるウェブサイト",
+      "Web AR 3D プロジェクト",
+      "シンプルなウェブゲーム",
+      "様々なウェブアプリケーション"
+    ],
+    "contact": "何か一緒に取り組みたいことがありましたら、お気軽にご連絡ください。"
+  },
+  "languages": {
+    "mandarin": "台湾華語 (母語)",
+    "english": "英語 (まあまあ話せます😝)",
+    "japanese": "日本語 (日常会話)"
+  },
+  "other_interests": {
+    "games": "🎮 ゲーム",
+    "anime": "🎞️ アニメ",
+    "music": "🎵 音楽と楽器",
+    "traveling": "✈️ 旅行 (ほとんど日本)"
+  },
+  "works": {
+    "title": "作品集",
+    "CSS_JS_ANIMATION": {
+      "title": "CSS + JS アニメーション",
+      "works": [
+        {
+          "name": "大溪大禧",
+          "link": "https://daxidaxi-online.tw/wish",
+          "description": "すべてのアニメーションは CSS と Vanilla JS で作成"
+        },
+        {
+          "name": "采億科技公式サイト",
+          "link": "https://tsaiyitech.com/",
+          "description": "サイト全体の構築。\nCSS アニメーション。\nSEO のためのプリレンダリング。"
+        }
+      ]
+    },
+    "SITE_REFACTOR": {
+      "title": "サイトリファクタリング",
+      "works": [
+        {
+          "name": "Giloo.ist",
+          "link": "https://giloo.ist/",
+          "description": "サイト全体のリファクタリング。テーマシステムとコンポーネント管理の構築。インポート"
+        }
+      ]
+    },
+    "WEB_AR": {
+      "title": "Web AR",
+      "works": [
+        {
+          "name": "AR 顔フィルター",
+          "link": "https://7red4.github.io/VPS_testing/",
+          "description": "顔を追跡し、人体を検出して自動的に背景を削除できる Web ベースの AR アプリケーション。また、ユーザーは写真やGIFを生成し、ステッカーを追加して編集することができます。\n使用ライブラリ："
+        },
+        {
+          "name": "AR ロケーション",
+          "link": "https://7red4.github.io/ar-location-demo/",
+          "description": "Web AR を使用して地図上のポイントの位置を探索できるシンプルなデモプロジェクト。すべてのマークからスタンプを集めて報酬を獲得できます。\nコアライブラリ使用"
+        }
+      ]
+    },
+    "MINI_WEB_GAMES": {
+      "title": "ミニWebゲーム",
+      "works": [
+        {
+          "name": "PChome V1111P パチンコ",
+          "link": "https://7red4.github.io/PChome_shopping_festival-reupload-/",
+          "description": "PChome V1111P パチンコゲームのイベントページ。\n使用"
+        },
+        {
+          "name": "PChome V1111P リズムゲーム",
+          "link": "https://7red4.github.io/PChome_shopping_festival-reupload-/",
+          "description": "PChome V1111P のリズムゲーム。\nDOM、JS、CSS のみで作成。"
+        }
+      ]
+    },
+    "OTHERS": {
+      "title": "その他",
+      "works": [
+        {
+          "name": "YTダウンローダーデスクトップアプリ",
+          "link": "https://github.com/7Red4/ytDownloader/",
+          "description": "YouTube から動画をダウンロードできるデスクトップアプリケーション。\n使用"
+        }
+      ]
+    }
+  },
+  "contact": {
+    "title": "お問い合わせ",
+    "description": "何か一緒に取り組みたいことがありましたら、お気軽にご連絡ください。",
+    "description2": "または Discord で DM を送ることもできます："
+  },
+  "copied": {
+    "email": "メールアドレスをクリップボードにコピーしました",
+    "discord": "Discord ID をクリップボードにコピーしました"
+  }
+} 

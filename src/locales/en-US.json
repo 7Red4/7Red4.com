@@ -1,0 +1,109 @@
+{
+  "bring_window_back": "Oh no! Bring my window back😱 ",
+  "name": {
+    "main": "Ryan Lee",
+    "sub": "李閎仕",
+    "sub_alias": "紅柿"
+  },
+  "job": "Web Developer",
+  "about": {
+    "title": "About Me",
+    "description": "Hi! I'm Ryan, a web developer from Taiwan.",
+    "what_i_do": "What I do:",
+    "description_list": [
+      "Web with fancy effects",
+      "Some Web AR 3D projects",
+      "Simple Web Games",
+      "Most kind of web apps"
+    ],
+    "contact": "Feel free to contact me if you have something want to work on with me. Sent me an email"
+  },
+  "languages": {
+    "mandarin": "Mandarin/中文 (Native)",
+    "english": "English (Fluent I guess 😝)",
+    "japanese": "Japanese (Daily Conversation)"
+  },
+  "other_interests": {
+    "games": "🎮 Games",
+    "anime": "🎞️ Anime",
+    "music": "🎵 Music & Instruments",
+    "traveling": "✈️ Traveling (mostly in Japan)"
+  },
+  "works": {
+    "title": "Works",
+    "CSS_JS_ANIMATION": {
+      "title": "CSS + JS Animation",
+      "works": [
+        {
+          "name": "Daxi Online",
+          "link": "https://daxidaxi-online.tw/wish",
+          "description": "All Animation is done by CSS and Vanilla JS"
+        },
+        {
+          "name": "Tsai Yi Tech. official website",
+          "link": "https://tsaiyitech.com/",
+          "description": "Build the whole website.\nCSS Animation.\nPre-render with for SEO."
+        }
+      ]
+    },
+    "SITE_REFACTOR": {
+      "title": "Site Refactor",
+      "works": [
+        {
+          "name": "Giloo.ist",
+          "link": "https://giloo.ist/",
+          "description": "Refactor the whole website. For theme system and component management. And import."
+        }
+      ]
+    },
+    "WEB_AR": {
+      "title": "Web AR",
+      "works": [
+        {
+          "name": "AR face filter",
+          "link": "https://7red4.github.io/VPS_testing/",
+          "description": "A web-based AR application that can track faces and detect human bodies for automatic background removal. Additionally, it allows users to generate photos or GIFs and edit them by adding stickers.\nIncluded libraries:"
+        },
+        {
+          "name": "AR Location",
+          "link": "https://7red4.github.io/ar-location-demo/",
+          "description": "A simple demo project that allows you to explore the location of a point on the map by using web AR. Get all stamps from marks and get a reward.\nCore library using"
+        }
+      ]
+    },
+    "MINI_WEB_GAMES": {
+      "title": "Mini Web Games",
+      "works": [
+        {
+          "name": "PC Home V1111P pinball",
+          "link": "https://7red4.github.io/PChome_shopping_festival-reupload-/",
+          "description": "An event page for PC Home V1111P pinball game.\nusing"
+        },
+        {
+          "name": "PC Home V1111P rhythm game",
+          "link": "https://7red4.github.io/PChome_shopping_festival-reupload-/",
+          "description": "A rhythm game for PC Home V1111P.\nCreated by only DOM, JS and CSS."
+        }
+      ]
+    },
+    "OTHERS": {
+      "title": "Others",
+      "works": [
+        {
+          "name": "YT Downloader Desktop App",
+          "link": "https://github.com/7Red4/ytDownloader/",
+          "description": "A desktop app that allows you to download videos from YouTube.\nusing"
+        }
+      ]
+    }
+  },
+  "contact": {
+    "title": "Contact",
+    "description": "Feel free to contact me if you have something want to work on with me. Sent me an email",
+    "description2": "or maybe you want to DM me by Discord:"
+  },
+  "copied": {
+    "email": "Email copied to clipboard",
+    "discord": "Discord ID copied to clipboard"
+  }
+}

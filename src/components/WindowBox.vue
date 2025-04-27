@@ -144,7 +144,6 @@ defineExpose({
   border: 2px solid #333;
   min-width: 280px;
   box-shadow: 4px 4px 0 #888;
-  user-select: none;
   z-index: 100;
   max-height: 90vh;
   display: flex;
