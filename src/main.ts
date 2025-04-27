@@ -9,7 +9,6 @@ import { createGtm } from '@gtm-support/vue-gtm';
 import router from './routes';
 
 const i18n = createI18n({
-  locale: 'zh-TW',
   messages: {
     'zh-TW': zhTW as Record<string, any>,
     'en-US': enUS as Record<string, any>,

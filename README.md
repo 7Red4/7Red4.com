@@ -5,10 +5,12 @@
 - [x] Landing page with retro style
 - [x] Window UI
 - [ ] Sound effects
-- [ ] Responsive design
-- [ ] i18n
+- [x] Responsive design
+- [x] i18n
 - [x] Favicon
 - [x] meta data
+- [ ] Add a blog page
+- [ ] Add a games page
 
 ## Tech Stack
 
