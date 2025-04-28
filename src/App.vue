@@ -19,13 +19,13 @@
 
         <span class="text-sm font-bold">7Red4 Portfolio</span>
       </div>
-      <div class="right-menu text-xs">
-        {{ languageMap[currentLanguage] }}
-        <div class="divider" />
+      <div class="right-menu text-xs sm:text-base">
+        <div class="relative text-right self-stretch hidden sm:block">
+          {{ languageMap[currentLanguage] }}
+        </div>
+        <div class="divider hidden sm:block" />
         {{ time }}
-        <div class="divider" />
         {{ date }}
-        <div class="divider" />
         {{ day }}
       </div>
 
@@ -61,9 +61,12 @@
                   >
                     ✓
                   </div>
-                  <a href="#" @click="changeLanguage(language.value)">
+                  <button
+                    class="flex items-center gap-2 px-2 py-1"
+                    @click="changeLanguage(language.value)"
+                  >
                     {{ language.name }}
-                  </a>
+                  </button>
                 </li>
               </ul>
             </div>
@@ -173,17 +176,17 @@ onUnmounted(() => {
 
 const isLanguageMenuVisible = ref(false);
 
-const time = ref(dayjs().format('HH:mm:ss'));
-const date = ref(dayjs().format('YYYY/MM/DD'));
-const day = ref(dayjs().locale(currentLanguage.value).format('dddd'));
+const time = ref(dayjs().format('HH:mm'));
+const date = ref(dayjs().format('MM/DD'));
+const day = ref(dayjs().locale(currentLanguage.value).format('ddd'));
 setInterval(() => {
-  time.value = dayjs().format('HH:mm:ss');
-  date.value = dayjs().format('YYYY/MM/DD');
-  day.value = dayjs().locale(currentLanguage.value).format('dddd');
+  time.value = dayjs().format('HH:mm');
+  date.value = dayjs().format('MM/DD');
+  day.value = dayjs().locale(currentLanguage.value).format('ddd');
 }, 1000);
 </script>
 
-<style scoped>
+<style scoped lang="scss">
 .menu-bar {
   padding: 0.5rem 1rem;
   display: flex;
