@@ -138,10 +138,11 @@ const currentLanguage = ref(getCurrentLanguage());
 
 const changeLanguage = (language: string = currentLanguage.value) => {
   currentLanguage.value = language;
-  i18n.setLocaleMessage(language, i18n.getLocaleMessage(language));
+  i18n.locale.value = language;
   isLanguageMenuVisible.value = false;
   isMenuVisible.value = false;
   localStorage.setItem('lang', language);
+  document.documentElement.lang = language;
 };
 
 const isMenuVisible = ref(false);
