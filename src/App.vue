@@ -136,7 +136,7 @@ const getCurrentLanguage = () => {
 
 const currentLanguage = ref(getCurrentLanguage());
 
-const changeLanguage = (language: string) => {
+const changeLanguage = (language: string = currentLanguage.value) => {
   currentLanguage.value = language;
   i18n.setLocaleMessage(language, i18n.getLocaleMessage(language));
   isLanguageMenuVisible.value = false;
@@ -168,6 +168,10 @@ const toggleMenu = () => {
     document.removeEventListener('click', handleClickOutside);
   }
 };
+
+onMounted(() => {
+  changeLanguage();
+});
 
 // Clean up event listener when component is unmounted
 onUnmounted(() => {
