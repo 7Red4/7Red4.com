@@ -5,12 +5,17 @@ const router = createRouter({
   routes: [
     {
       path: '/',
+      component: () => import('@/views/NewIndex.vue'),
+    },
+    {
+      // Old portfolio (for reference)
+      path: '/old',
       component: () => import('@/views/Index.vue'),
     },
     {
       // not found
       path: '/:pathMatch(.*)*',
-      component: () => import('@/views/Index.vue'),
+      component: () => import('@/views/NewIndex.vue'),
     },
   ],
 })

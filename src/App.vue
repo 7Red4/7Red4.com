@@ -3,17 +3,9 @@
     <header class="menu-bar z-[9999]">
       <div class="flex items-center gap-2">
         <div class="relative">
-          <button
-            @mouseenter="isTomatoFilled = true"
-            @mouseleave="isTomatoFilled = false"
-            @click="toggleMenu"
-            class="menu-btn flex items-center justify-center"
-          >
-            <img
-              :src="isTomatoFilled ? img_tomato_filled : img_tomato"
-              alt="tomato"
-              class="w-6 h-6 cursor-pointer"
-            />
+          <button @mouseenter="isTomatoFilled = true" @mouseleave="isTomatoFilled = false" @click="toggleMenu"
+            class="menu-btn flex items-center justify-center">
+            <img :src="isTomatoFilled ? img_tomato_filled : img_tomato" alt="tomato" class="w-6 h-6 cursor-pointer" />
           </button>
         </div>
 
@@ -29,42 +21,24 @@
         {{ day }}
       </div>
 
-      <div
-        v-if="isMenuVisible"
-        class="menu-container absolute top-full left-0 shadow-lg border-2 border-black"
-      >
+      <div v-if="isMenuVisible" class="menu-container absolute top-full left-0 shadow-lg border-2 border-black">
         <ul>
-          <li
-            class="menu_list_item relative whitespace-nowrap cursor-pointer px-2 py-1"
-            @mouseover="isLanguageMenuVisible = true"
-            @mouseleave="isLanguageMenuVisible = false"
-          >
+          <li class="menu_list_item relative whitespace-nowrap cursor-pointer px-2 py-1"
+            @mouseover="isLanguageMenuVisible = true" @mouseleave="isLanguageMenuVisible = false">
             🌐 Languages ▶
-            <div
-              v-if="isLanguageMenuVisible"
-              class="absolute top-0 left-full shadow-lg border-2 border-black"
-            >
+            <div v-if="isLanguageMenuVisible" class="absolute top-0 left-full shadow-lg border-2 border-black">
               <ul>
-                <li
-                  v-for="(language, index) in languages"
-                  :key="language.value"
-                  class="menu_list_item flex items-center gap-2 px-2 py-1"
-                  :class="{
+                <li v-for="(language, index) in languages" :key="language.value"
+                  class="menu_list_item flex items-center gap-2 px-2 py-1" :class="{
                     'border-b-2 border-black': index !== languages.length - 1
-                  }"
-                >
-                  <div
-                    :class="{
-                      'opacity-100': currentLanguage === language.value,
-                      'opacity-0': currentLanguage !== language.value
-                    }"
-                  >
+                  }">
+                  <div :class="{
+                    'opacity-100': currentLanguage === language.value,
+                    'opacity-0': currentLanguage !== language.value
+                  }">
                     ✓
                   </div>
-                  <button
-                    class="flex items-center gap-2 px-2 py-1"
-                    @click="changeLanguage(language.value)"
-                  >
+                  <button class="flex items-center gap-2 px-2 py-1" @click="changeLanguage(language.value)">
                     {{ language.name }}
                   </button>
                 </li>
@@ -77,9 +51,7 @@
 
     <router-view />
 
-    <footer
-      class="absolute bottom-0 left-0 w-full h-10 flex justify-center items-center"
-    >
+    <footer class="absolute bottom-0 left-0 w-full h-10 flex justify-center items-center">
       <p class="text-xs flex items-center gap-2">
         © 2025 7Red4
         <a href="https://github.com/7Red4" target="_blank" class="inline-block">
@@ -196,30 +168,71 @@ setInterval(() => {
   padding: 0.5rem 1rem;
   display: flex;
   justify-content: space-between;
-  border-bottom: 1px solid #666;
-  background-color: #fdffd9;
-  position: relative;
+  border-bottom: 2px solid #ff00ff;
+  background: linear-gradient(180deg, rgba(10, 10, 31, 0.95) 0%, rgba(20, 20, 40, 0.9) 100%);
+  backdrop-filter: blur(10px);
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
+  color: #00ffff;
+  font-weight: 500;
+  box-shadow: 0 0 20px rgba(255, 0, 255, 0.3);
+  mix-blend-mode: difference;
+}
+
+.menu-bar span {
+  text-shadow: 0 0 10px rgba(0, 255, 255, 0.8);
 }
 
 .right-menu {
   display: flex;
   gap: 1rem;
   align-items: center;
+  text-shadow: 0 0 8px rgba(0, 255, 255, 0.6);
 }
 
 .divider {
-  width: 1px;
+  width: 2px;
   align-self: stretch;
-  background-color: #666;
+  background: linear-gradient(180deg, #ff00ff 0%, #00ffff 100%);
+  box-shadow: 0 0 5px rgba(255, 0, 255, 0.5);
 }
 
 .menu_list_item {
-  background-color: #fdffd9;
-  color: black;
+  background: linear-gradient(135deg, rgba(20, 20, 40, 0.95) 0%, rgba(30, 10, 40, 0.95) 100%);
+  color: #00ffff;
+  transition: all 0.3s ease;
+  border-bottom: 1px solid rgba(255, 0, 255, 0.3);
+  text-shadow: 0 0 5px rgba(0, 255, 255, 0.5);
 }
 
 .menu_list_item:hover {
-  background-color: #232323;
-  color: #fff;
+  background: linear-gradient(135deg, #ff00ff 0%, #8800ff 100%);
+  color: #ffffff;
+  text-shadow: 0 0 10px rgba(255, 255, 255, 0.8);
+  box-shadow: 0 0 15px rgba(255, 0, 255, 0.6);
+  transform: translateX(4px);
+}
+
+.menu-container {
+  background: rgba(10, 10, 31, 0.98);
+  border: 2px solid #ff00ff !important;
+  box-shadow: 0 0 20px rgba(255, 0, 255, 0.5);
+}
+
+.menu-container ul ul {
+  background: rgba(10, 10, 31, 0.98);
+  border: 2px solid #00ffff !important;
+  box-shadow: 0 0 20px rgba(0, 255, 255, 0.5);
+}
+
+.menu_list_item button {
+  transition: all 0.2s ease;
+}
+
+.menu_list_item button:hover {
+  transform: scale(1.05);
 }
 </style>
