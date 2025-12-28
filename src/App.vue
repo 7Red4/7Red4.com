@@ -3,49 +3,43 @@
     <header class="menu-bar z-[9999]">
       <div class="flex items-center gap-2">
         <div class="relative">
-          <button @mouseenter="isTomatoFilled = true" @mouseleave="isTomatoFilled = false" @click="toggleMenu"
-            class="menu-btn flex items-center justify-center">
-            <img :src="isTomatoFilled ? img_tomato_filled : img_tomato" alt="tomato" class="w-6 h-6 cursor-pointer" />
-          </button>
+          <img :src="img_tomato_filled" alt="tomato" class="w-6 h-6" />
         </div>
 
         <span class="text-sm font-bold">7Red4 Portfolio</span>
       </div>
       <div class="right-menu text-xs sm:text-base">
         <div class="relative text-right self-stretch hidden sm:block">
-          {{ languageMap[currentLanguage] }}
+          <button @click="toggleMenu" ref="menuButton">
+            {{ languageMap[currentLanguage] }}
+          </button>
+          <div
+            v-if="isMenuVisible"
+            ref="menuContainer"
+            class="menu-container absolute top-full right-0 shadow-lg border-2"
+          >
+            <ul>
+              <li v-for="(language, index) in languages" :key="language.value"
+                class="menu_list_item flex items-center gap-2 px-2 py-1 cursor-pointer"
+                :class="{
+                  'border-b-2': index !== languages.length - 1
+                }"
+                @click="changeLanguage(language.value)">
+                <div :class="{
+                  'opacity-100': currentLanguage === language.value,
+                  'opacity-0': currentLanguage !== language.value
+                }">
+                  ✓
+                </div>
+                <span>{{ language.name }}</span>
+              </li>
+            </ul>
+          </div>
         </div>
         <div class="divider hidden sm:block" />
         {{ time }}
         {{ date }}
         {{ day }}
-      </div>
-
-      <div v-if="isMenuVisible" class="menu-container absolute top-full left-0 shadow-lg border-2 border-black">
-        <ul>
-          <li class="menu_list_item relative whitespace-nowrap cursor-pointer px-2 py-1"
-            @mouseover="isLanguageMenuVisible = true" @mouseleave="isLanguageMenuVisible = false">
-            🌐 Languages ▶
-            <div v-if="isLanguageMenuVisible" class="absolute top-0 left-full shadow-lg border-2 border-black">
-              <ul>
-                <li v-for="(language, index) in languages" :key="language.value"
-                  class="menu_list_item flex items-center gap-2 px-2 py-1" :class="{
-                    'border-b-2 border-black': index !== languages.length - 1
-                  }">
-                  <div :class="{
-                    'opacity-100': currentLanguage === language.value,
-                    'opacity-0': currentLanguage !== language.value
-                  }">
-                    ✓
-                  </div>
-                  <button class="flex items-center gap-2 px-2 py-1" @click="changeLanguage(language.value)">
-                    {{ language.name }}
-                  </button>
-                </li>
-              </ul>
-            </div>
-          </li>
-        </ul>
       </div>
     </header>
 
@@ -63,7 +57,7 @@
 </template>
 
 <script setup lang="ts">
-import img_tomato from '@/assets/tomato.png';
+import { ref, onMounted, onUnmounted, nextTick } from 'vue'
 import img_tomato_filled from '@/assets/tomato_filled.png';
 
 import svg_github from '@/assets/github.svg';
@@ -75,8 +69,6 @@ import 'dayjs/locale/ja';
 import 'dayjs/locale/zh-tw';
 
 const i18n = useI18n();
-
-const isTomatoFilled = ref(false);
 
 const languages = [
   {
@@ -111,32 +103,37 @@ const currentLanguage = ref(getCurrentLanguage());
 const changeLanguage = (language: string = currentLanguage.value) => {
   currentLanguage.value = language;
   i18n.locale.value = language;
-  isLanguageMenuVisible.value = false;
   isMenuVisible.value = false;
   localStorage.setItem('lang', language);
   document.documentElement.lang = language;
 };
 
 const isMenuVisible = ref(false);
+const menuButton = ref<HTMLElement | null>(null);
+const menuContainer = ref<HTMLElement | null>(null);
 
 const handleClickOutside = (event: MouseEvent) => {
-  const menuContainer = document.querySelector('.menu-container');
-  const menuBtn = document.querySelector('.menu-btn');
-
   if (
-    menuContainer &&
-    menuBtn &&
-    !menuContainer.contains(event.target as Node) &&
-    !menuBtn.contains(event.target as Node)
+    menuContainer.value &&
+    menuButton.value &&
+    !menuContainer.value.contains(event.target as Node) &&
+    !menuButton.value.contains(event.target as Node)
   ) {
     isMenuVisible.value = false;
+    document.removeEventListener('click', handleClickOutside);
   }
 };
 
 const toggleMenu = () => {
   isMenuVisible.value = !isMenuVisible.value;
+
   if (isMenuVisible.value) {
-    document.addEventListener('click', handleClickOutside);
+    // 使用 nextTick 確保 DOM 更新後再添加事件監聽
+    nextTick(() => {
+      setTimeout(() => {
+        document.addEventListener('click', handleClickOutside);
+      }, 0);
+    });
   } else {
     document.removeEventListener('click', handleClickOutside);
   }
@@ -206,6 +203,7 @@ setInterval(() => {
   transition: all 0.3s ease;
   border-bottom: 1px solid rgba(255, 0, 255, 0.3);
   text-shadow: 0 0 5px rgba(0, 255, 255, 0.5);
+  white-space: nowrap;
 }
 
 .menu_list_item:hover {

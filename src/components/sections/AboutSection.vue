@@ -38,10 +38,7 @@ const sectionProgress = computed(() => {
             <div class="mt-8">
               <h3 class="text-2xl font-bold text-neon-magenta mb-4">Skills</h3>
               <div class="flex flex-wrap gap-3">
-                <span v-for="skill in t('about.skills')" :key="skill"
-                  class="px-4 py-2 border border-neon-cyan text-neon-cyan rounded-md">
-                  {{ skill }}
-                </span>
+
               </div>
             </div>
           </div>
