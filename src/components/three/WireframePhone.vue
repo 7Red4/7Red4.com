@@ -1,172 +1,122 @@
 <script setup lang="ts">
-import { ref, onMounted, onUnmounted } from 'vue'
+import { ref } from 'vue'
 import * as THREE from 'three'
+import { useThreeScene } from '@/composables/useThreeScene'
 
-interface Props {
-  scrollProgress: number
-}
-
-const props = defineProps<Props>()
+const props = defineProps<{ scrollProgress: number }>()
 const canvasRef = ref<HTMLCanvasElement | null>(null)
 
-let scene: THREE.Scene | null = null
-let camera: THREE.PerspectiveCamera | null = null
-let renderer: THREE.WebGLRenderer | null = null
-let phoneGroup: THREE.Group | null = null
-let animationId: number | null = null
+/** 建線框並釋放來源幾何體 */
+const edges = (source: THREE.BufferGeometry, material: THREE.Material) => {
+  const mesh = new THREE.LineSegments(new THREE.EdgesGeometry(source), material)
+  source.dispose()
+  return mesh
+}
 
-onMounted(() => {
-  if (!canvasRef.value) return
-
-  // Scene setup
-  scene = new THREE.Scene()
-  scene.background = null
-
-  // Camera setup
-  camera = new THREE.PerspectiveCamera(
-    50,
-    canvasRef.value.clientWidth / canvasRef.value.clientHeight,
-    0.1,
-    1000
-  )
-  camera.position.set(2, 1, 5)
-  camera.lookAt(0, 0, 0)
-
-  // Renderer setup
-  renderer = new THREE.WebGLRenderer({
-    canvas: canvasRef.value,
-    alpha: true,
-    antialias: true,
-  })
-  renderer.setSize(canvasRef.value.clientWidth, canvasRef.value.clientHeight)
-  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
-
-  // Create phone handset group
-  phoneGroup = new THREE.Group()
-
-  const wireframeMaterial = new THREE.LineBasicMaterial({
-    color: 0x39ff14, // 霓虹綠（復古終端機顏色）
-    transparent: true,
-    opacity: 0.8,
-  })
-
-  // 聽筒主體 - 使用彎曲的圓柱體來模擬
-  // 左側聽筒（耳機部分）
-  const earGeometry = new THREE.CylinderGeometry(0.3, 0.3, 0.8, 6)
-  earGeometry.rotateZ(Math.PI / 2)
-  earGeometry.translate(-1.2, 0.3, 0)
-  const earEdges = new THREE.EdgesGeometry(earGeometry)
-  const earWireframe = new THREE.LineSegments(earEdges, wireframeMaterial)
-  phoneGroup.add(earWireframe)
-
-  // 右側聽筒（話筒部分）
-  const micGeometry = new THREE.CylinderGeometry(0.3, 0.3, 0.8, 6)
-  micGeometry.rotateZ(Math.PI / 2)
-  micGeometry.translate(1.2, -0.3, 0)
-  const micEdges = new THREE.EdgesGeometry(micGeometry)
-  const micWireframe = new THREE.LineSegments(micEdges, wireframeMaterial)
-  phoneGroup.add(micWireframe)
-
-  // 中間連接的手柄（彎曲效果用多個小圓柱體模擬）
-  const handleSegments = 8
-  for (let i = 0; i < handleSegments; i++) {
-    const t = i / (handleSegments - 1)
-    const angle = t * Math.PI * 0.6 - Math.PI * 0.3
-
-    const segmentGeometry = new THREE.CylinderGeometry(0.15, 0.15, 0.4, 5)
-    segmentGeometry.rotateZ(Math.PI / 2 + angle * 0.5)
-
-    const x = -1.2 + t * 2.4
-    const y = 0.3 - Math.sin(t * Math.PI) * 0.8
-
-    segmentGeometry.translate(x, y, 0)
-    const segmentEdges = new THREE.EdgesGeometry(segmentGeometry)
-    const segmentWireframe = new THREE.LineSegments(
-      segmentEdges,
-      new THREE.LineBasicMaterial({
-        color: 0x00ffff, // 霓虹青色
-        transparent: true,
-        opacity: 0.7,
-      })
-    )
-    phoneGroup.add(segmentWireframe)
+/** 躺在 XZ 平面上的圓圈，用來當聽筒上的收音孔紋路 */
+const ringOnXZ = (radius: number, y: number, material: THREE.Material, segments = 24) => {
+  const points: THREE.Vector3[] = []
+  for (let i = 0; i < segments; i++) {
+    const a = (i / segments) * Math.PI * 2
+    points.push(new THREE.Vector3(Math.cos(a) * radius, y, Math.sin(a) * radius))
   }
+  return new THREE.LineLoop(new THREE.BufferGeometry().setFromPoints(points), material)
+}
 
-  // 在聽筒上添加一些細節（網格孔）
-  const createGrille = (x: number, y: number) => {
-    for (let i = 0; i < 3; i++) {
-      for (let j = 0; j < 3; j++) {
-        const holeGeometry = new THREE.CircleGeometry(0.05, 4)
-        holeGeometry.translate(x + (i - 1) * 0.12, y + (j - 1) * 0.12, 0.31)
-        const holeEdges = new THREE.EdgesGeometry(holeGeometry)
-        const holeWireframe = new THREE.LineSegments(
-          holeEdges,
-          new THREE.LineBasicMaterial({
-            color: 0xff00ff, // 霓虹洋紅
-            transparent: true,
-            opacity: 0.5,
-          })
-        )
-        phoneGroup.add(holeWireframe)
+useThreeScene(canvasRef, {
+  fov: 50,
+  // 話筒加上捲線的總高約 3.8，鏡頭要退夠遠才不會上下被裁掉
+  position: [1.1, 0.15, 5.5],
+  lookAt: [0, -0.45, 0],
+  frame: { width: 1.4, height: 4 },
+  build: ({ scene }) => {
+    const phoneGroup = new THREE.Group()
+
+    const green = new THREE.LineBasicMaterial({
+      color: 0x39ff14, // 霓虹綠（復古終端機顏色）
+      transparent: true,
+      opacity: 0.85,
+    })
+    const cyan = new THREE.LineBasicMaterial({ color: 0x00ffff, transparent: true, opacity: 0.7 })
+    const magenta = new THREE.LineBasicMaterial({ color: 0xff00ff, transparent: true, opacity: 0.55 })
+
+    // --- 手柄：直立，沿一條微彎的曲線生成連續的管 ---
+    // 開口朝 +Z，所以手柄往 -Z 微彎（背對觀眾拱起）
+    const handleCurve = new THREE.CatmullRomCurve3([
+      new THREE.Vector3(0, -0.84, -0.04),
+      new THREE.Vector3(0, -0.44, -0.19),
+      new THREE.Vector3(0, 0, -0.25),
+      new THREE.Vector3(0, 0.44, -0.19),
+      new THREE.Vector3(0, 0.84, -0.04),
+    ])
+    // radialSegments 取 6，低面數才有稜線可以被 EdgesGeometry 抓出來
+    phoneGroup.add(edges(new THREE.TubeGeometry(handleCurve, 18, 0.15, 6, false), green))
+
+    // --- 兩端聽筒：開口都朝 +Z，上下各自向內傾一點 ---
+    const CUP_HEIGHT = 0.34
+
+    const createEarpiece = (side: 1 | -1) => {
+      const cup = new THREE.Group()
+
+      // 上窄下寬但收斂，錐度太大會變成喇叭
+      cup.add(edges(new THREE.CylinderGeometry(0.27, 0.4, CUP_HEIGHT, 10), green))
+
+      // 開口面的收音孔：三圈同心圓 + 圓心
+      const faceY = -CUP_HEIGHT / 2
+      for (const radius of [0.12, 0.23, 0.33]) {
+        cup.add(ringOnXZ(radius, faceY, magenta))
       }
+      cup.add(ringOnXZ(0.035, faceY, magenta, 8))
+
+      cup.position.set(0, side * 0.92, 0)
+      // -π/2 讓開口從朝 -Y 轉成朝 +Z，再各自往中間傾
+      cup.rotation.x = -Math.PI / 2 + side * 0.18
+      return cup
     }
-  }
 
-  createGrille(-1.2, 0.3) // 左側耳機網格
-  createGrille(1.2, -0.3) // 右側話筒網格
+    phoneGroup.add(createEarpiece(1)) // 上：聽筒
+    phoneGroup.add(createEarpiece(-1)) // 下：話筒
 
-  // 調整整體角度
-  phoneGroup.rotation.x = -0.3
-  phoneGroup.rotation.y = 0.5
+    // --- 捲線：從下方話筒底緣引出後往下垂 ---
+    const cordPoints: THREE.Vector3[] = [
+      new THREE.Vector3(0.04, -1.24, 0.02),
+      new THREE.Vector3(0.12, -1.42, 0.04),
+    ]
 
-  scene.add(phoneGroup)
+    const coilTurns = 6
+    const coilSteps = 170
+    const coilCenterX = 0.2
+    for (let i = 0; i <= coilSteps; i++) {
+      const t = i / coilSteps
+      // 相位偏移 π，讓螺旋起點落在靠近引出段的那一側，接得比較順
+      const angle = Math.PI + t * Math.PI * 2 * coilTurns
+      const radius = 0.17 * (1 - t * 0.2)
+      cordPoints.push(
+        new THREE.Vector3(
+          coilCenterX + Math.cos(angle) * radius,
+          -1.55 - t * 0.9,
+          0.04 + Math.sin(angle) * radius
+        )
+      )
+    }
+    phoneGroup.add(new THREE.Line(new THREE.BufferGeometry().setFromPoints(cordPoints), cyan))
 
-  // 光暈
-  const glowLight = new THREE.PointLight(0x39ff14, 1, 10)
-  glowLight.position.set(0, 1, 2)
-  scene.add(glowLight)
+    scene.add(phoneGroup)
 
-  // Animate
-  const animate = () => {
-    animationId = requestAnimationFrame(animate)
+    const glowLight = new THREE.PointLight(0x39ff14, 1, 10)
+    glowLight.position.set(0, 1, 2)
+    scene.add(glowLight)
 
-    if (phoneGroup) {
-      // 緩慢旋轉和浮動
-      phoneGroup.rotation.y += 0.004
-      phoneGroup.position.y = Math.sin(Date.now() * 0.0008) * 0.2
-      phoneGroup.rotation.x = -0.3 + Math.cos(Date.now() * 0.0005) * 0.1
-
-      // 根據滾動進度
+    return (elapsed) => {
       const sectionProgress = Math.max(0, Math.min(1, (props.scrollProgress - 0.8) / 0.2))
-      phoneGroup.rotation.y += sectionProgress * 0.003
+      // 不做整圈旋轉：轉到正側面時話筒的輪廓會糊成一團線，
+      // 改成在可辨識的四分之三視角附近來回擺盪
+      const swing = Math.sin(elapsed * (0.28 + sectionProgress * 0.14))
+      phoneGroup.rotation.y = -0.45 + swing * 0.4
+      phoneGroup.rotation.z = Math.cos(elapsed * 0.5) * 0.05
+      phoneGroup.position.y = Math.sin(elapsed * 0.8) * 0.12
     }
-
-    if (renderer && scene && camera) {
-      renderer.render(scene, camera)
-    }
-  }
-  animate()
-
-  // Handle resize
-  const handleResize = () => {
-    if (!camera || !renderer || !canvasRef.value) return
-    const width = canvasRef.value.clientWidth
-    const height = canvasRef.value.clientHeight
-    camera.aspect = width / height
-    camera.updateProjectionMatrix()
-    renderer.setSize(width, height)
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
-  }
-  window.addEventListener('resize', handleResize)
-})
-
-onUnmounted(() => {
-  if (animationId !== null) {
-    cancelAnimationFrame(animationId)
-  }
-  if (renderer) {
-    renderer.dispose()
-  }
+  },
 })
 </script>
 

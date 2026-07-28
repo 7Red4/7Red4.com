@@ -21,5 +21,15 @@ export default defineConfig({
     alias: {
       '@': '/src'
     }
-  }
+  },
+  build: {
+    rollupOptions: {
+      output: {
+        // three 佔了首頁 chunk 的大半，拆出來才能被獨立快取
+        manualChunks: {
+          three: ['three'],
+        },
+      },
+    },
+  },
 })

@@ -10,21 +10,18 @@
       </div>
       <div class="right-menu text-xs sm:text-base">
         <div class="relative text-right self-stretch hidden sm:block">
-          <button @click="toggleMenu" ref="menuButton">
+          <button ref="menuButton" type="button" aria-haspopup="listbox" :aria-expanded="isMenuVisible"
+            @click="toggleMenu">
             {{ languageMap[currentLanguage] }}
           </button>
-          <div
-            v-if="isMenuVisible"
-            ref="menuContainer"
-            class="menu-container absolute top-full right-0 shadow-lg border-2"
-          >
-            <ul>
-              <li v-for="(language, index) in languages" :key="language.value"
-                class="menu_list_item flex items-center gap-2 px-2 py-1 cursor-pointer"
-                :class="{
+          <div v-if="isMenuVisible" ref="menuContainer"
+            class="menu-container absolute top-full right-0 shadow-lg border-2">
+            <ul role="listbox">
+              <li v-for="(language, index) in languages" :key="language.value" role="option"
+                :aria-selected="currentLanguage === language.value"
+                class="menu_list_item flex items-center gap-2 px-2 py-1 cursor-pointer" :class="{
                   'border-b-2': index !== languages.length - 1
-                }"
-                @click="changeLanguage(language.value)">
+                }" @click="changeLanguage(language.value)">
                 <div :class="{
                   'opacity-100': currentLanguage === language.value,
                   'opacity-0': currentLanguage !== language.value
@@ -47,8 +44,8 @@
 
     <footer class="absolute bottom-0 left-0 w-full h-10 flex justify-center items-center">
       <p class="text-xs flex items-center gap-2">
-        © 2025 7Red4
-        <a href="https://github.com/7Red4" target="_blank" class="inline-block">
+        © {{ currentYear }} 7Red4
+        <a href="https://github.com/7Red4" target="_blank" rel="noopener noreferrer" class="inline-block">
           <svg_github class="w-6 h-6" />
         </a>
       </p>
@@ -57,7 +54,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, onUnmounted, nextTick } from 'vue'
+import { computed, nextTick, onMounted, onUnmounted, ref } from 'vue'
 import img_tomato_filled from '@/assets/tomato_filled.png';
 
 import svg_github from '@/assets/github.svg';
@@ -91,21 +88,44 @@ const languageMap: Record<string, string> = {
   'zh-TW': '繁體中文'
 };
 
-const getCurrentLanguage = () => {
-  const storageLanguage = localStorage.getItem('lang');
-  const browserLanguage = navigator.language;
+const SUPPORTED_LANGUAGES = ['en-US', 'ja', 'zh-TW'] as const;
+type SupportedLanguage = (typeof SUPPORTED_LANGUAGES)[number];
 
-  return storageLanguage || browserLanguage;
+/**
+ * navigator.language 可能回傳 'zh-Hant-TW'、'en-GB'、'ja-JP' 這類值，
+ * 直接拿去查 languageMap 會是 undefined，選單就變空白。
+ */
+const normalizeLanguage = (value: string | null | undefined): SupportedLanguage => {
+  if (!value) return 'en-US';
+  if ((SUPPORTED_LANGUAGES as readonly string[]).includes(value)) {
+    return value as SupportedLanguage;
+  }
+  const lower = value.toLowerCase();
+  if (lower.startsWith('zh')) return 'zh-TW';
+  if (lower.startsWith('ja')) return 'ja';
+  return 'en-US';
 };
 
-const currentLanguage = ref(getCurrentLanguage());
+const getCurrentLanguage = () =>
+  normalizeLanguage(localStorage.getItem('lang') ?? navigator.language);
+
+const currentLanguage = ref<SupportedLanguage>(getCurrentLanguage());
+
+// dayjs 的 locale 代碼與 i18n 不完全一致
+const DAYJS_LOCALE: Record<SupportedLanguage, string> = {
+  'en-US': 'en',
+  ja: 'ja',
+  'zh-TW': 'zh-tw'
+};
 
 const changeLanguage = (language: string = currentLanguage.value) => {
-  currentLanguage.value = language;
-  i18n.locale.value = language;
+  const next = normalizeLanguage(language);
+  currentLanguage.value = next;
+  i18n.locale.value = next;
   isMenuVisible.value = false;
-  localStorage.setItem('lang', language);
-  document.documentElement.lang = language;
+  localStorage.setItem('lang', next);
+  document.documentElement.lang = next;
+  updateClock();
 };
 
 const isMenuVisible = ref(false);
@@ -139,25 +159,30 @@ const toggleMenu = () => {
   }
 };
 
+const time = ref('');
+const date = ref('');
+const day = ref('');
+const currentYear = computed(() => dayjs().year());
+
+const updateClock = () => {
+  const now = dayjs();
+  time.value = now.format('HH:mm');
+  date.value = now.format('MM/DD');
+  day.value = now.locale(DAYJS_LOCALE[currentLanguage.value]).format('ddd');
+};
+
+let clockTimer: ReturnType<typeof setInterval> | null = null;
+
 onMounted(() => {
   changeLanguage();
+  // 原本這個 interval 建在 setup 的頂層且從未清除
+  clockTimer = setInterval(updateClock, 1000);
 });
 
-// Clean up event listener when component is unmounted
 onUnmounted(() => {
   document.removeEventListener('click', handleClickOutside);
+  if (clockTimer) clearInterval(clockTimer);
 });
-
-const isLanguageMenuVisible = ref(false);
-
-const time = ref(dayjs().format('HH:mm'));
-const date = ref(dayjs().format('MM/DD'));
-const day = ref(dayjs().locale(currentLanguage.value).format('ddd'));
-setInterval(() => {
-  time.value = dayjs().format('HH:mm');
-  date.value = dayjs().format('MM/DD');
-  day.value = dayjs().locale(currentLanguage.value).format('ddd');
-}, 1000);
 </script>
 
 <style scoped lang="scss">

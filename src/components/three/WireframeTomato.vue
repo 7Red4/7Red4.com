@@ -1,146 +1,97 @@
 <script setup lang="ts">
-import { ref, onMounted, onUnmounted, watch } from 'vue'
+import { ref } from 'vue'
 import * as THREE from 'three'
+import { useThreeScene } from '@/composables/useThreeScene'
 
-interface Props {
-  scrollProgress: number
-}
-
-const props = defineProps<Props>()
+const props = defineProps<{ scrollProgress: number }>()
 const canvasRef = ref<HTMLCanvasElement | null>(null)
 
-let scene: THREE.Scene | null = null
-let camera: THREE.PerspectiveCamera | null = null
-let renderer: THREE.WebGLRenderer | null = null
-let tomatoGroup: THREE.Group | null = null
-let animationId: number | null = null
+/** 建線框並釋放來源幾何體（EdgesGeometry 建構時已複製資料） */
+const edges = (source: THREE.BufferGeometry, material: THREE.Material) => {
+  const mesh = new THREE.LineSegments(new THREE.EdgesGeometry(source), material)
+  source.dispose()
+  return mesh
+}
 
-onMounted(() => {
-  if (!canvasRef.value) return
+/**
+ * 一片蒂葉的輪廓，躺在 XZ 平面、朝 +X 伸出。
+ *
+ * 原本用 ConeGeometry(_, _, 3)：那是三角錐，六個錐的底面全擠在中心，
+ * EdgesGeometry 又會把每個錐的所有稜線畫出來，頂端就糊成一坨。
+ * 改成扁平的封閉輪廓，沒有內部稜線。
+ */
+const sepalOutline = () =>
+  new THREE.BufferGeometry().setFromPoints([
+    new THREE.Vector3(0, 0, 0),
+    new THREE.Vector3(0.34, 0, 0.21),
+    new THREE.Vector3(1.1, 0, 0),
+    new THREE.Vector3(0.34, 0, -0.21),
+  ])
 
-  // Scene setup
-  scene = new THREE.Scene()
-  scene.background = null // 透明背景
+const BODY_RADIUS = 1.5
+// 番茄是扁的，正球會讀成一顆普通的低多邊形球
+const BODY_SQUASH = 0.76
+const SHOULDER_Y = BODY_RADIUS * BODY_SQUASH
 
-  // Camera setup
-  camera = new THREE.PerspectiveCamera(
-    50,
-    canvasRef.value.clientWidth / canvasRef.value.clientHeight,
-    0.1,
-    1000
-  )
-  camera.position.set(0, 0, 8)
+const SEPAL_COUNT = 6
 
-  // Renderer setup
-  renderer = new THREE.WebGLRenderer({
-    canvas: canvasRef.value,
-    alpha: true,
-    antialias: true,
-  })
-  renderer.setSize(canvasRef.value.clientWidth, canvasRef.value.clientHeight)
-  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
+useThreeScene(canvasRef, {
+  fov: 50,
+  position: [0, 0, 8],
+  frame: { width: 3.4, height: 3.4 },
+  build: ({ scene }) => {
+    const tomatoGroup = new THREE.Group()
 
-  // Create tomato group
-  tomatoGroup = new THREE.Group()
-
-  // 番茄主體（低多邊形球體）
-  const bodyGeometry = new THREE.SphereGeometry(1.5, 6, 5)
-
-  // 線框材質
-  const wireframeMaterial = new THREE.LineBasicMaterial({
-    color: 0xff0066, // 霓虹粉紅偏紅
-    transparent: true,
-    opacity: 0.8,
-  })
-
-  // 創建線框
-  const bodyEdges = new THREE.EdgesGeometry(bodyGeometry)
-  const bodyWireframe = new THREE.LineSegments(bodyEdges, wireframeMaterial)
-  tomatoGroup.add(bodyWireframe)
-
-  // 番茄頂部葉子（簡單的錐形）
-  const stemGeometry = new THREE.ConeGeometry(0.6, 0.5, 5)
-  stemGeometry.translate(0, 1.7, 0)
-  const stemEdges = new THREE.EdgesGeometry(stemGeometry)
-  const stemWireframe = new THREE.LineSegments(
-    stemEdges,
-    new THREE.LineBasicMaterial({
+    const bodyMaterial = new THREE.LineBasicMaterial({
+      color: 0xff0066, // 霓虹粉紅偏紅
+      transparent: true,
+      opacity: 0.8,
+    })
+    // 蒂葉共用一份 material
+    const leafMaterial = new THREE.LineBasicMaterial({
       color: 0x39ff14, // 霓虹綠
       transparent: true,
       opacity: 0.8,
     })
-  )
-  tomatoGroup.add(stemWireframe)
 
-  // 添加幾片葉子
-  for (let i = 0; i < 4; i++) {
-    const leafGeometry = new THREE.ConeGeometry(0.3, 1, 3)
-    leafGeometry.rotateZ(Math.PI / 2)
-    const angle = (Math.PI * 2 * i) / 4
-    leafGeometry.translate(
-      Math.cos(angle) * 0.5,
-      1.8,
-      Math.sin(angle) * 0.5
-    )
-    const leafEdges = new THREE.EdgesGeometry(leafGeometry)
-    const leafWireframe = new THREE.LineSegments(
-      leafEdges,
-      new THREE.LineBasicMaterial({
-        color: 0x39ff14,
-        transparent: true,
-        opacity: 0.6,
-      })
-    )
-    tomatoGroup.add(leafWireframe)
-  }
+    // --- 果實本體：低多邊形球壓扁 ---
+    const body = new THREE.SphereGeometry(BODY_RADIUS, 8, 6)
+    body.scale(1, BODY_SQUASH, 1)
+    tomatoGroup.add(edges(body, bodyMaterial))
 
-  scene.add(tomatoGroup)
+    // --- 蒂葉：六片放射狀展開並沿肩線下垂 ---
+    for (let i = 0; i < SEPAL_COUNT; i++) {
+      const angle = (Math.PI * 2 * i) / SEPAL_COUNT
+      const sepal = sepalOutline()
 
-  // 添加光暈效果
-  const glowLight = new THREE.PointLight(0xff0066, 1, 10)
-  glowLight.position.set(0, 0, 3)
-  scene.add(glowLight)
+      // 變換順序很重要：先讓葉尖下垂，再繞 Y 轉到各自的方位，最後移到果實肩線。
+      // 原本的寫法把定向寫成迴圈外的固定值，六片會全部朝同一邊
+      sepal.rotateZ(-0.34)
+      sepal.rotateY(angle)
+      sepal.translate(0, SHOULDER_Y, 0)
 
-  // Animate
-  const animate = () => {
-    animationId = requestAnimationFrame(animate)
+      tomatoGroup.add(new THREE.LineLoop(sepal, leafMaterial))
+    }
 
-    if (tomatoGroup) {
-      // 緩慢旋轉
-      tomatoGroup.rotation.y += 0.005
-      tomatoGroup.rotation.x = Math.sin(Date.now() * 0.0005) * 0.1
+    // --- 果梗 ---
+    const stem = new THREE.CylinderGeometry(0.08, 0.13, 0.5, 5)
+    stem.translate(0, SHOULDER_Y + 0.2, 0)
+    tomatoGroup.add(edges(stem, leafMaterial))
 
-      // 根據滾動進度調整位置和旋轉速度
+    scene.add(tomatoGroup)
+
+    const glowLight = new THREE.PointLight(0xff0066, 1, 10)
+    glowLight.position.set(0, 0, 3)
+    scene.add(glowLight)
+
+    return (elapsed) => {
+      // 進到 About 區間時轉速加快。
+      // 這顆接近軸對稱，整圈旋轉不會有辨識問題，維持持續自轉
       const sectionProgress = Math.max(0, Math.min(1, (props.scrollProgress - 0.25) / 0.25))
-      tomatoGroup.rotation.y += sectionProgress * 0.002
+      tomatoGroup.rotation.y = elapsed * (0.3 + sectionProgress * 0.12)
+      tomatoGroup.rotation.x = Math.sin(elapsed * 0.5) * 0.1
     }
-
-    if (renderer && scene && camera) {
-      renderer.render(scene, camera)
-    }
-  }
-  animate()
-
-  // Handle resize
-  const handleResize = () => {
-    if (!camera || !renderer || !canvasRef.value) return
-    const width = canvasRef.value.clientWidth
-    const height = canvasRef.value.clientHeight
-    camera.aspect = width / height
-    camera.updateProjectionMatrix()
-    renderer.setSize(width, height)
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
-  }
-  window.addEventListener('resize', handleResize)
-})
-
-onUnmounted(() => {
-  if (animationId !== null) {
-    cancelAnimationFrame(animationId)
-  }
-  if (renderer) {
-    renderer.dispose()
-  }
+  },
 })
 </script>
 

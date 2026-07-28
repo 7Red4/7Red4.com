@@ -369,7 +369,7 @@ import { templateRef, useClipboard } from '@vueuse/core'
 import svg_about from '@/assets/about.svg'
 import svg_works from '@/assets/works.svg'
 import svg_copy from '@/assets/copy.svg'
-import WindowBox from '@/components/WindowBox.vue'
+import WindowBox from './WindowBox.vue'
 import { useI18n } from 'vue-i18n'
 
 const { t } = useI18n();
@@ -495,6 +495,9 @@ const showToast = (text: string) => {
   background-color: #fdffd9;
   width: 100vw;
   height: 100vh;
+  /* 這版是固定視窗的桌面 UI，原本靠 main.scss 的全域 html,body overflow:hidden。
+     那條全域規則已經移除（會鎖死之後版本的滾動首頁），改成這裡自己鎖 */
+  overflow: hidden;
   display: flex;
   flex-direction: column;
 }

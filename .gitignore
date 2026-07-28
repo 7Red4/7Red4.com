@@ -12,6 +12,10 @@ dist
 dist-ssr
 *.local
 
+# 根目錄的暫存產物（保留檔案，只是不進版控）
+/Gemini_Generated_Image_*.png
+/conversation_with_gemini
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json

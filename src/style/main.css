@@ -1,0 +1,55 @@
+@import 'tailwindcss';
+@import url('https://fonts.googleapis.com/css2?family=DotGothic16&display=swap');
+
+/* 霓虹色統一在這裡定義，取代原本散在各 section scoped CSS 裡的重複宣告 */
+@theme {
+  --color-neon-cyan: #00ffff;
+  --color-neon-magenta: #ff00ff;
+  --color-neon-green: #39ff14;
+  --color-neon-purple: #9d00ff;
+  --color-neon-pink: #ff0066;
+  --color-bg-dark: #0a0a0f;
+}
+
+/* 霓虹光暈，同樣取代各處重複的 text-shadow */
+@utility glow-cyan {
+  text-shadow:
+    0 0 10px rgb(0 255 255 / 0.8),
+    0 0 20px rgb(0 255 255 / 0.6);
+}
+
+@utility glow-magenta {
+  text-shadow:
+    0 0 10px rgb(255 0 255 / 0.8),
+    0 0 20px rgb(255 0 255 / 0.6);
+}
+
+@utility glow-green {
+  text-shadow: 0 0 10px rgb(57 255 20 / 0.8);
+}
+
+body {
+  font-family: 'DotGothic16', sans-serif;
+  letter-spacing: 0.08em;
+}
+
+button {
+  cursor: pointer;
+}
+
+/*
+ * 這裡原本有 `html, body { overflow: hidden !important }`，是舊版 /old 桌面 UI
+ * 留下來的。新版首頁是滾動驅動的（useLenis + useScrollProgress），全域鎖 overflow
+ * 會讓它完全捲不動、永遠停在 Hero 那一屏。改由 Index.vue 的 .desktop 自己鎖。
+ */
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

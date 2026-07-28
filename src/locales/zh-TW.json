@@ -2,7 +2,7 @@
   "bring_window_back": "糟糕！把我的視窗還來😱",
   "name": {
     "main": "Ryan Lee",
-    "sub": "李閎仕",
+    "sub": "",
     "sub_alias": "紅柿"
   },
   "job": "前端工程師",
@@ -36,12 +36,10 @@
       "works": [
         {
           "name": "大溪大禧",
-          "link": "https://daxidaxi-online.tw/wish",
           "description": "所有動畫皆使用 CSS 和原生 JS 製作"
         },
         {
           "name": "采億科技官方網站",
-          "link": "https://tsaiyitech.com/",
           "description": "建置整個網站。\nCSS 動畫。\n預渲染以優化 SEO。"
         }
       ]
@@ -51,7 +49,6 @@
       "works": [
         {
           "name": "Giloo.ist",
-          "link": "https://giloo.ist/",
           "description": "重構整個網站。建置主題系統和元件管理。導入"
         }
       ]
@@ -61,12 +58,10 @@
       "works": [
         {
           "name": "AR 臉部濾鏡",
-          "link": "https://7red4.github.io/VPS_testing/",
           "description": "一個基於網頁的 AR 應用程式，可以追蹤臉部並偵測人體以自動移除背景。此外，使用者可以生成照片或 GIF，並透過添加貼圖進行編輯。\n使用的函式庫："
         },
         {
           "name": "AR 定位",
-          "link": "https://7red4.github.io/ar-location-demo/",
           "description": "一個簡單的示範專案，讓您可以使用網頁 AR 探索地圖上的位置。收集所有標記的印章並獲得獎勵。\n核心函式庫使用"
         }
       ]
@@ -76,12 +71,10 @@
       "works": [
         {
           "name": "PChome V1111P 彈珠台",
-          "link": "https://7red4.github.io/PChome_shopping_festival-reupload-/",
           "description": "PChome V1111P 彈珠台活動頁面。\n使用"
         },
         {
           "name": "PChome V1111P 節奏遊戲",
-          "link": "https://7red4.github.io/PChome_shopping_festival-reupload-/",
           "description": "PChome V1111P 的節奏遊戲。\n僅使用 DOM、JS 和 CSS 創建。"
         }
       ]
@@ -91,7 +84,6 @@
       "works": [
         {
           "name": "YT 下載器桌面應用程式",
-          "link": "https://github.com/7Red4/ytDownloader/",
           "description": "一個可以從 YouTube 下載影片的桌面應用程式。\n使用"
         }
       ]
