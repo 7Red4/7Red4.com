@@ -8,6 +8,9 @@
 export const PORTFOLIO_VERSIONS: Record<number, () => Promise<unknown>> = {
   2025: () => import('@/views/2025/Index.vue'),
   2026: () => import('@/views/2026/Index.vue'),
+  // 開發中。因為 resolvePortfolioYear() 只挑「不超過當年度」的版本，
+  // 登記在這裡不會影響根路徑，但 /2027 已經可以直接開來看
+  2027: () => import('@/views/2027/Index.vue'),
 }
 
 /** 由小到大 */

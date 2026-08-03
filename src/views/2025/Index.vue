@@ -1,4 +1,6 @@
 <template>
+  <Chrome />
+
   <div class="desktop">
     <div class="bg_noise absolute inset-0" />
 
@@ -119,7 +121,7 @@
             <div class="w-full sm:w-1/2 p-2">
               <a class="box" href="https://daxidaxi-online.tw/wish" target="_blank">
                 <img
-                  src="https://img.cake.me/cdn-cgi/image/fit=scale-down,format=auto,w=1920/https://images.cakeresume.com/4axp80/7red4/f3cb80c2-6830-4094-a4a8-f81612a5ad8a.png"
+                  src="@/assets/daxi-online.png"
                   alt="">
               </a>
               <div class="h-3"></div>
@@ -135,7 +137,7 @@
             <div class="w-full sm:w-1/2 p-2">
               <a class="box" href="https://tsaiyitech.com/" target="_blank">
                 <img
-                  src="https://img.cake.me/cdn-cgi/image/fit=scale-down,format=auto,w=1920/https://images.cakeresume.com/4axp80/7red4/3e5f22d6-2158-4c00-9f0d-20d47f3d33e9.png"
+                  src="@/assets/tsai-yi-tech.png"
                   alt="">
               </a>
               <div class="h-3"></div>
@@ -156,7 +158,7 @@
             <div class="w-full sm:w-1/2 p-2">
               <a class="box" href="http://giloo.ist/" target="_blank">
                 <img
-                  src="https://img.cake.me/cdn-cgi/image/fit=scale-down,format=auto,w=1920/https://images.cakeresume.com/4axp80/7red4/5191c047-f8a6-42fb-bde2-c6c086adc475.png"
+                  src="@/assets/giloo.png"
                   alt="">
               </a>
               <div class="h-3"></div>
@@ -176,7 +178,7 @@
           <div class="flex flex-wrap -mx-2">
             <div class="w-full sm:w-1/2 p-2">
               <a class="box" href="https://github.com/7Red4/VPS_testing/" target="_blank">
-                <img src="@/assets/AR Filter.png" alt="">
+                <img src="@/assets/ar-filter.png" alt="">
               </a>
               <div class="h-3"></div>
               <p class="text-lg font-bold">
@@ -206,7 +208,7 @@
             </div>
             <div class="w-full sm:w-1/2 p-2">
               <a class="box" href="https://github.com/7Red4/ar-location-demo/" target="_blank">
-                <img src="@/assets/AR Location.png" alt="">
+                <img src="@/assets/ar-location.png" alt="">
               </a>
               <div class="h-3"></div>
               <p class="text-lg font-bold">
@@ -230,7 +232,7 @@
           <div class="flex flex-wrap -mx-2">
             <div class="w-full sm:w-1/2 p-2">
               <a class="box" href="https://github.com/7Red4/PChome_shopping_festival-reupload-/" target="_blank">
-                <img src="@/assets/PC Home V1111P pinball.png" alt="">
+                <img src="@/assets/pchome-v1111p-pinball.png" alt="">
               </a>
               <div class="h-3"></div>
               <p class="text-lg font-bold">
@@ -249,7 +251,7 @@
 
             <div class="w-full sm:w-1/2 p-2">
               <a class="box" href="https://github.com/7Red4/PChome_shopping_festival-reupload-/" target="_blank">
-                <img src="@/assets/PC Home V1111P rhythm game.png" alt="">
+                <img src="@/assets/pchome-v1111p-rhythm-game.png" alt="">
               </a>
               <div class="h-3"></div>
               <p class="text-lg font-bold">
@@ -370,6 +372,7 @@ import svg_about from '@/assets/about.svg'
 import svg_works from '@/assets/works.svg'
 import svg_copy from '@/assets/copy.svg'
 import WindowBox from './WindowBox.vue'
+import Chrome from './Chrome.vue'
 import { useI18n } from 'vue-i18n'
 
 const { t } = useI18n();

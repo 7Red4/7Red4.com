@@ -25,6 +25,13 @@ const router = createRouter({
     },
     ...yearRoutes,
     {
+      // 2027 版的作品集分頁。目前沒有年份前綴，等 2028 版也有自己的作品集時
+      // 這裡會需要改成 /2027/work 之類的命名空間
+      path: '/work',
+      name: 'work',
+      component: () => import('@/views/2027/Work.vue'),
+    },
+    {
       // 尚未存在的年份（例如 2027 版還沒做）退回根路徑，
       // 由上面的解析邏輯挑出最新一版
       path: '/:year(\\d{4})',

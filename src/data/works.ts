@@ -1,8 +1,11 @@
-import arFilter from '@/assets/AR Filter.png'
-import arLocation from '@/assets/AR Location.png'
-import pinball from '@/assets/PC Home V1111P pinball.png'
-import rhythmGame from '@/assets/PC Home V1111P rhythm game.png'
+import arFilter from '@/assets/ar-filter.png'
+import arLocation from '@/assets/ar-location.png'
+import pinball from '@/assets/pchome-v1111p-pinball.png'
+import rhythmGame from '@/assets/pchome-v1111p-rhythm-game.png'
 import ytDownloader from '@/assets/yt-downloader.png'
+import daxiOnline from '@/assets/daxi-online.png'
+import tsaiYiTech from '@/assets/tsai-yi-tech.png'
+import giloo from '@/assets/giloo.png'
 
 export type WorkTech = { label: string; href?: string }
 
@@ -26,6 +29,9 @@ export type WorkCategory = {
 /**
  * 圖片、連結、技術棧都不需要翻譯，所以放這裡而不是塞進三份 locale JSON。
  * 文字（name / description）仍由 i18n 以 works.<key>.works.<index>.* 取得。
+ *
+ * 圖片一律用本地資產。前三張原本外連 images.cakeresume.com，
+ * 那是履歷平台的資源：會被擋廣告的擴充套件攔掉，帳號一動也會整批失效。
  */
 export const WORK_CATEGORIES: WorkCategory[] = [
   {
@@ -33,14 +39,12 @@ export const WORK_CATEGORIES: WorkCategory[] = [
     entries: [
       {
         index: 0,
-        image:
-          'https://images.cakeresume.com/4axp80/7red4/f3cb80c2-6830-4094-a4a8-f81612a5ad8a.png',
+        image: daxiOnline,
         demo: 'https://daxidaxi-online.tw/wish',
       },
       {
         index: 1,
-        image:
-          'https://images.cakeresume.com/4axp80/7red4/3e5f22d6-2158-4c00-9f0d-20d47f3d33e9.png',
+        image: tsaiYiTech,
         demo: 'https://tsaiyitech.com/',
       },
     ],
@@ -50,8 +54,7 @@ export const WORK_CATEGORIES: WorkCategory[] = [
     entries: [
       {
         index: 0,
-        image:
-          'https://images.cakeresume.com/4axp80/7red4/5191c047-f8a6-42fb-bde2-c6c086adc475.png',
+        image: giloo,
         demo: 'https://giloo.ist/',
         tech: [
           { label: 'Vuetify', href: 'https://vuetifyjs.com/' },

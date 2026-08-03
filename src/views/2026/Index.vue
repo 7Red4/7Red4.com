@@ -5,6 +5,7 @@ import HeroSection from './sections/HeroSection.vue'
 import AboutSection from './sections/AboutSection.vue'
 import WorksSection from './sections/WorksSection.vue'
 import ContactSection from './sections/ContactSection.vue'
+import Chrome from './Chrome.vue'
 
 // 初始化平滑滾動
 const { lenis } = useLenis()
@@ -14,6 +15,8 @@ const { scrollProgress } = useScrollProgress(lenis)
 </script>
 
 <template>
+  <Chrome />
+
   <div class="portfolio text-white">
     <!-- Hero Section (0-25%) -->
     <HeroSection :scrollProgress="scrollProgress" />
