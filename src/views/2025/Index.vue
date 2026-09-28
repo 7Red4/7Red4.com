@@ -117,11 +117,11 @@
           <h1 class="text-2xl font-bold">☆ {{ $t('works.CSS_JS_ANIMATION.title') }}</h1>
           <div class="flex flex-wrap -mx-2">
             <div class="w-full sm:w-1/2 p-2">
-              <a class="box" href="https://daxidaxi-online.tw/wish" target="_blank">
+              <div class="box">
                 <img
                   src="https://img.cake.me/cdn-cgi/image/fit=scale-down,format=auto,w=1920/https://images.cakeresume.com/4axp80/7red4/f3cb80c2-6830-4094-a4a8-f81612a5ad8a.png"
                   alt="">
-              </a>
+              </div>
               <div class="h-3"></div>
 
               <p class="text-lg font-bold">

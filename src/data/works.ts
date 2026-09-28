@@ -35,7 +35,6 @@ export const WORK_CATEGORIES: WorkCategory[] = [
         index: 0,
         image:
           'https://images.cakeresume.com/4axp80/7red4/f3cb80c2-6830-4094-a4a8-f81612a5ad8a.png',
-        demo: 'https://daxidaxi-online.tw/wish',
       },
       {
         index: 1,
