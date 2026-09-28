@@ -36,10 +36,11 @@ defineProps<{ scrollProgress: number }>()
             :key="`${category.key}-${entry.index}`"
             class="work-card border border-neon-magenta p-6 rounded-lg transition-all"
           >
-            <a
+            <component
+              :is="entry.demo || entry.repo ? 'a' : 'div'"
               :href="entry.demo ?? entry.repo"
-              target="_blank"
-              rel="noopener noreferrer"
+              :target="entry.demo || entry.repo ? '_blank' : undefined"
+              :rel="entry.demo || entry.repo ? 'noopener noreferrer' : undefined"
               class="block mb-4 overflow-hidden rounded"
             >
               <img
@@ -49,7 +50,7 @@ defineProps<{ scrollProgress: number }>()
                 decoding="async"
                 class="w-full transition-transform duration-300 hover:scale-105"
               />
-            </a>
+            </component>
 
             <h4 class="text-xl font-bold text-neon-cyan mb-2">
               {{ t(`works.${category.key}.works.${entry.index}.name`) }}
