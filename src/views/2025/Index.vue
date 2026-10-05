@@ -119,11 +119,11 @@
           <h1 class="text-2xl font-bold">☆ {{ $t('works.CSS_JS_ANIMATION.title') }}</h1>
           <div class="flex flex-wrap -mx-2">
             <div class="w-full sm:w-1/2 p-2">
-              <a class="box" href="https://daxidaxi-online.tw/wish" target="_blank">
+              <div class="box">
                 <img
                   src="@/assets/daxi-online.png"
                   alt="">
-              </a>
+              </div>
               <div class="h-3"></div>
 
               <p class="text-lg font-bold">
