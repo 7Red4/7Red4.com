@@ -88,12 +88,14 @@ export const WORK_CATEGORIES: WorkCategory[] = [
       {
         index: 0,
         image: pinball,
+        demo: 'https://7red4.github.io/PChome_shopping_festival-reupload-/',
         repo: 'https://github.com/7Red4/PChome_shopping_festival-reupload-/',
         tech: [{ label: 'matter.js', href: 'https://brm.io/matter-js/' }],
       },
       {
         index: 1,
         image: rhythmGame,
+        demo: 'https://7red4.github.io/PChome_shopping_festival-reupload-/',
         repo: 'https://github.com/7Red4/PChome_shopping_festival-reupload-/',
       },
     ],
