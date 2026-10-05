@@ -86,6 +86,15 @@ defineProps<{ scrollProgress: number }>()
                 demo →
               </a>
               <a
+                v-if="entry.game"
+                :href="entry.game"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="text-neon-green hover:underline"
+              >
+                game →
+              </a>
+              <a
                 v-if="entry.repo"
                 :href="entry.repo"
                 target="_blank"

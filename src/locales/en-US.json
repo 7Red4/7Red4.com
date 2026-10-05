@@ -76,6 +76,10 @@
         {
           "name": "PC Home V1111P rhythm game",
           "description": "A rhythm game for PC Home V1111P.\nCreated by only DOM, JS and CSS."
+        },
+        {
+          "name": "320+1 Chiayi City Expo",
+          "description": "Official website and mini game for the 2025 Chiayi City Expo, built with React.\nBilingual (Chinese / English), featuring exhibition themes, news, an event calendar and maps.\nIn the mini game, players tour Chiayi landmarks against the clock to bring more people to the expo. Includes a tutorial, sound effects, a world leaderboard, a Canvas-generated downloadable score card, and Web Share support.\nusing"
         }
       ]
     },
