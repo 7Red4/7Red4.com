@@ -16,9 +16,15 @@ const { t } = useI18n()
         :key="`${category.key}-${entry.index}`"
         class="work"
       >
-        <a :href="entry.demo ?? entry.repo" target="_blank" rel="noopener noreferrer">
+        <a
+          v-if="entry.demo || entry.repo"
+          :href="entry.demo ?? entry.repo"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
           <img :src="entry.image" alt="" loading="lazy" decoding="async" />
         </a>
+        <img v-else :src="entry.image" alt="" loading="lazy" decoding="async" />
         <div class="body">
           <h4>{{ t(`works.${category.key}.works.${entry.index}.name`) }}</h4>
           <p class="desc">{{ t(`works.${category.key}.works.${entry.index}.description`) }}</p>
@@ -33,6 +39,9 @@ const { t } = useI18n()
           <p class="links">
             <a v-if="entry.demo" :href="entry.demo" target="_blank" rel="noopener noreferrer">
               demo →
+            </a>
+            <a v-if="entry.game" :href="entry.game" target="_blank" rel="noopener noreferrer">
+              game →
             </a>
             <a v-if="entry.repo" :href="entry.repo" target="_blank" rel="noopener noreferrer">
               repo →

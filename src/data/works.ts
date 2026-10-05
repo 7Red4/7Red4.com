@@ -1,8 +1,8 @@
-import arFilter from '@/assets/AR Filter.png'
-import arLocation from '@/assets/AR Location.png'
-import pinball from '@/assets/PC Home V1111P pinball.png'
-import rhythmGame from '@/assets/PC Home V1111P rhythm game.png'
-import chiayiCityExpo from '@/assets/Chiayi City Expo 2025.png'
+import arFilter from '@/assets/ar-filter.png'
+import arLocation from '@/assets/ar-location.png'
+import pinball from '@/assets/pchome-v1111p-pinball.png'
+import rhythmGame from '@/assets/pchome-v1111p-rhythm-game.png'
+import chiayiCityExpo from '@/assets/chiayi-city-expo-2025.png'
 import ytDownloader from '@/assets/yt-downloader.png'
 import daxiOnline from '@/assets/daxi-online.png'
 import tsaiYiTech from '@/assets/tsai-yi-tech.png'
@@ -42,8 +42,7 @@ export const WORK_CATEGORIES: WorkCategory[] = [
     entries: [
       {
         index: 0,
-        image:
-          'https://images.cakeresume.com/4axp80/7red4/f3cb80c2-6830-4094-a4a8-f81612a5ad8a.png',
+        image: daxiOnline,
       },
       {
         index: 1,
