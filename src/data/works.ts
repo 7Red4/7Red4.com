@@ -2,6 +2,7 @@ import arFilter from '@/assets/AR Filter.png'
 import arLocation from '@/assets/AR Location.png'
 import pinball from '@/assets/PC Home V1111P pinball.png'
 import rhythmGame from '@/assets/PC Home V1111P rhythm game.png'
+import chiayiCityExpo from '@/assets/Chiayi City Expo 2025.png'
 import ytDownloader from '@/assets/yt-downloader.png'
 
 export type WorkTech = { label: string; href?: string }
@@ -12,6 +13,8 @@ export type WorkEntry = {
   image: string
   /** 線上 demo */
   demo?: string
+  /** 遊戲頁 */
+  game?: string
   /** 原始碼 */
   repo?: string
   tech?: WorkTech[]
@@ -97,6 +100,17 @@ export const WORK_CATEGORIES: WorkCategory[] = [
         image: rhythmGame,
         demo: 'https://7red4.github.io/PChome_shopping_festival-reupload-/',
         repo: 'https://github.com/7Red4/PChome_shopping_festival-reupload-/',
+      },
+      {
+        index: 2,
+        image: chiayiCityExpo,
+        demo: 'https://chiayicityexpo2025.com/',
+        game: 'https://chiayicityexpo2025.com/game',
+        tech: [
+          { label: 'React', href: 'https://react.dev/' },
+          { label: 'React Router', href: 'https://reactrouter.com/' },
+          { label: 'howler.js', href: 'https://howlerjs.com/' },
+        ],
       },
     ],
   },
